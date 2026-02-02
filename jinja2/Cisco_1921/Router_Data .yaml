@@ -1,0 +1,142 @@
+---
+
+common:
+  domain_name: domain.com
+  dns_servers: [X.X.X.X, Y.Y.Y.Y]
+  name_server: A.A.A.A
+  timezone: "CET 1 0"
+  summer_time: "CEST recurring last Sun Mar 2:00 last Sun Oct 3:00"
+  ntp_server: 10.2.0.100
+
+  tacacs:
+    servers: [x.x.x.x]
+    key_7: "****"
+
+  logging:
+    host: x.x.x.x
+    port: X
+    source_if: GigabitEthernet0/0.1
+
+  snmp:
+    contact: IT
+    trap_source: GigabitEthernet0/0.1
+    host: x.x.x.x
+    host_name: mon02
+    communities:
+      - { name: "cisco", mode: "RW", acl: 90 }
+      - { name: "public", mode: "RO", acl: 91 }
+
+  banners:
+    motd: |
+      ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	BANNER
+      ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+routers:
+  10.10.10.1:
+    hostname: Router
+
+    lan:
+      native:
+        if_name: GigabitEthernet0/0.1
+        ip: 10.X.X.X
+        mask: 255.255.255.0
+        vlan: 1
+
+      technik:
+        if_name: GigabitEthernet0/0.281
+        ip: 10.x.x.x
+        mask: 255.255.255.0
+        vlan: X
+        vrf: Technik
+
+    dhcp:
+      excluded:
+        - { start: 10.X.X.X, end: 10.X.X.X }
+        - { start: 10.X.X.X, end: 10.X.X.X }
+        - { vrf: Technik, start: 10.X.X.X, end: 10.X.X.X }
+        - { vrf: Technik, start: 10.X.X.X, end: 10.X.X.X }
+      pools:
+        - name: Lan
+          network: 10.X.X.X
+          mask: 255.255.255.0
+          default_router: 10.x.x.x
+          dns: [x.x.x.x, x.x.x.x]
+          domain: X.domain.com
+          lease: "0 8"
+          options:
+            - { code: 42, type: ip, value: 10.x.x.x }
+            - { code: 60, type: ascii, value: "PXEClient" }
+        - name: Technik
+          vrf: Technik          network: 10.x.x.x
+          mask: 255.255.255.0
+          default_router: 10.x.x.x
+          dns: [8.8.8.8, 8.8.4.4]
+          lease: "0 1"
+          options:
+            - { code: 42, type: ip, value: 10.x.x.x }
+
+    wan:
+      dialer:
+        if_name: Dialer1
+        description: DSL-O2
+        chap_hostname: O2
+        chap_password_7: "***"
+      default_route:
+        next_hop_if: Dialer1
+
+    dmvpn:
+      ipsec_profile: DMVPN-Profile
+      tunnels:
+        - name: Tunnel2
+          description: "DMVPN"
+          ip: 172.28.4.131
+          mask: 255.255.0.0
+          mtu: 1300
+          nhrp_auth: T2
+          network_id: 2
+          nhs: [172.x.x.x, 172.x.x.x]
+          maps:
+            - { nhs: 172.x.x.x, nbma: A.A.A.A, multicast: true }
+            - { nhs: 172.x.x.2, nbma: B.B.B.B, multicast: true }
+          tunnel_source: Dialer1
+          protect: true
+
+        - name: Tunnel28100
+          description: "DMVPN Technik"
+          vrf: Techniknetz
+          ip: 172.x.x.x
+          mask: 255.255.0.0
+          mtu: 1272
+          nhrp_auth: T2
+          network_id: 28
+          nhs: [172.x.x.x]
+          maps:
+            - { nhs: 172.x.x.x, nbma: A.B.C.D, multicast: true }
+          tunnel_source: GigabitEthernet0/0.1
+          protect: false
+
+    nat:
+      rules:
+        - "ip nat inside source list DSL-nat interface Dialer1 overload"
+        - "ip nat inside source list DSL-nat interface Dialer1 vrf Technikoverload"
+
+    bgp:
+      asn: AB
+      router_id: 172.x.x.x
+      networks:
+        - { prefix: 0.0.0.0, mask: null }
+        - { prefix: 10.x.x.x, mask: 255.255.255.0 }
+      neighbors:
+        - { ip: 172.x.x.x, remote_as: A }
+        - { ip: 172.x.x.x, remote_as: A }
+        - { ip: 172.x.x.x, remote_as: A }
+        - { ip: x.x.x.x, remote_as: A }
+      vrfs:
+        - name: Techniknetz
+          networks:
+            - { prefix: 10.x.x.x, mask: 255.255.255.0 }
+          neighbors:
+            - { ip: 172.x.x.x, remote_as: A }
+            - { ip: 172.x.x.x, remote_as: A }
+
