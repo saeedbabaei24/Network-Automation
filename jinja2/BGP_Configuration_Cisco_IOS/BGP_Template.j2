@@ -1,0 +1,8 @@
+#BGP_Template.j2 file
+ 
+router bgp {{ bgp.asn }}
+{% for n in bgp.neighbors %}
+ neighbor {{ n.ip }}
+{% endfor %}
+ 
+ 
