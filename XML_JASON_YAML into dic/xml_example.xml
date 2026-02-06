@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interfaces xmlns="ietf-interfaces">
+  <interface>
+    <name>GigabitEthernet2</name>
+    <description>Wide Area Network</description>
+    <enabled>true</enabled>
+    <ipv4>
+      <address>
+        <ip>172.16.0.2</ip>
+        <netmask>255.255.255.0</netmask>
+      </address>
+    </ipv4>
+  </interface>
+
+  <interface>
+    <name>GigabitEthernet3</name>
+    <description>LAN Users</description>
+    <enabled>true</enabled>
+    <ipv4>
+      <address>
+        <ip>10.10.10.1</ip>
+        <netmask>255.255.255.0</netmask>
+      </address>
+    </ipv4>
+  </interface>
+
+  <interface>
+    <name>Loopback0</name>
+    <description>Router-ID</description>
+    <enabled>true</enabled>
+    <ipv4>
+      <address>
+        <ip>192.0.2.1</ip>
+        <netmask>255.255.255.255</netmask>
+      </address>
+    </ipv4>
+  </interface>
+</interfaces>

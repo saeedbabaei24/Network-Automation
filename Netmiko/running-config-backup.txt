@@ -1,0 +1,740 @@
+Building configuration...
+
+Current configuration : 17208 bytes
+!
+! Last configuration change at 08:34:06 CET Tue Feb 3 2026 by sbabaei
+! NVRAM config last updated at 12:30:51 CET Thu Oct 30 2025 by mpries
+!
+version 15.0
+no service pad
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname debscp27-lab-sw01
+!
+boot-start-marker
+boot-end-marker
+!
+no logging message-counter syslog
+logging buffered 65536
+logging rate-limit 50 except warnings
+no logging console
+enable secret 9 $9$ZwCtoFACQDvCC7$DZA2gSw4yAgl7xBPsjQ01GXPpDg1lEYE5NH6Ks8uXvE
+!
+username admin privilege 15 secret 5 $1$kMl1$PAOwomyBDRRJzxajLC44K1
+aaa new-model
+!
+!
+aaa group server tacacs+ MGMT
+ server-private 192.168.253.14 key 7 130B154A04540B283F327A2163334613180C58045B0D020D14014E4757
+ ip tacacs source-interface GigabitEthernet1/0/24
+!
+aaa group server radius eadius
+!
+aaa authentication login default group tacacs+ local enable
+aaa authentication login CON local
+aaa authentication login VTY group MGMT local
+aaa authentication login LOCAL_EMERGENCY_ADMIN local
+aaa authentication enable default group MGMT enable
+aaa authentication dot1x default group radius
+aaa authorization console
+aaa authorization config-commands
+aaa authorization exec default group tacacs+ if-authenticated 
+aaa authorization exec VTY group MGMT local if-authenticated 
+aaa authorization exec LOCAL_EMERGENCY_ADMIN local none 
+aaa authorization exec CON local none 
+aaa authorization commands 0 VTY none 
+aaa authorization commands 0 LOCAL_EMERGENCY_ADMIN none 
+aaa authorization commands 0 CON none 
+aaa authorization commands 1 VTY group MGMT if-authenticated 
+aaa authorization commands 1 LOCAL_EMERGENCY_ADMIN none 
+aaa authorization commands 1 CON none 
+aaa authorization commands 15 default group tacacs+ if-authenticated 
+aaa authorization commands 15 VTY group MGMT if-authenticated 
+aaa authorization commands 15 LOCAL_EMERGENCY_ADMIN none 
+aaa authorization commands 15 CON none 
+aaa authorization network default group radius 
+aaa accounting dot1x default start-stop group radius
+aaa accounting exec default start-stop group tacacs+
+aaa accounting commands 15 default start-stop group tacacs+
+aaa accounting system default start-stop group tacacs+
+!
+!
+!
+!
+!
+aaa server radius dynamic-author
+ client 172.21.130.176 server-key aruba123
+ port 3799
+ auth-type all
+!
+aaa session-id common
+clock timezone CET 1 0
+clock summer-time CEST recurring last Sun Mar 2:00 last Sun Oct 3:00
+switch 1 provision ws-c2960x-24ts-l
+authentication mac-move permit
+!
+!
+ip dhcp snooping vlan 224
+ip dhcp snooping
+ip domain-name network.newyorker.de
+ip name-server 192.168.238.2
+ip device tracking
+login on-failure log
+login on-success log
+vtp domain debscp27
+vtp mode transparent
+!
+!
+crypto pki trustpoint TP-self-signed-2182586112
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2182586112
+ revocation-check none
+ rsakeypair TP-self-signed-2182586112
+!
+!
+crypto pki certificate chain TP-self-signed-2182586112
+archive
+ log config
+  logging enable
+dot1x system-auth-control
+!
+mac access-list extended FILTER
+ permit host a0ce.c858.4c75 any
+ permit a0ce.c900.0000 0000.00ff.ffff any
+ permit a0ce.c800.0000 0000.00ff.ffff any
+mac access-list extended MAC-ACL
+ permit any 0000.9000.e000 0fff.0fff.0fff
+mac access-list extended VL224_in
+ permit a0ce.c900.0000 0000.00ff.ffff any
+ permit a0ce.c800.0000 0000.00ff.ffff any
+ permit any a0ce.c800.0000 0000.00ff.ffff
+mac access-list extended acl300
+ permit a0ce.c800.0000 0000.00ff.ffff any
+ permit host a0ce.c858.4c74 any
+mac access-list extended acl301
+ permit any a0ce.c800.0000 0000.00ff.ffff
+ permit any host a0ce.c858.4c74
+mac access-list extended mac-in
+ permit host a0ce.c858.4c75 any
+ permit a0ce.c900.0000 0000.00ff.ffff any
+ permit a0ce.c800.0000 0000.00ff.ffff any
+spanning-tree mode pvst
+spanning-tree extend system-id
+!
+!
+!
+!
+!
+!
+!
+vlan access-map map224 20
+ match mac address VL224_in
+ action forward
+vlan access-map map224 30
+ action drop
+vlan access-map map300 10
+ match mac address acl300
+ action forward
+vlan access-map map300 20
+ match mac address acl301
+ action forward
+vlan access-map map300 99
+ action drop
+!
+vlan internal allocation policy ascending
+!
+vlan 10
+ name client
+!
+vlan 11
+ name WAN-Transit-172.20.0.0/27
+!
+vlan 12
+ name VPN-Hausnetz_WAN-Transfer-10.255
+!
+vlan 17,19 
+!
+vlan 22
+ name sd
+!
+vlan 23
+ name ww
+!
+vlan 33
+ name dd
+!
+vlan 34
+ name dede
+!
+vlan 40 
+!
+vlan 43
+ name fdddd
+!
+vlan 44
+ name ret
+!
+vlan 55
+ name bb
+!
+vlan 66
+ name jj
+!
+vlan 77
+ name ddddddd
+!
+vlan 98
+ name jjj
+!
+vlan 99
+ name ij
+!
+vlan 100
+ name wlc-test
+!
+vlan 110 
+!
+vlan 111
+ name sdsd
+!
+vlan 122
+ name test
+!
+vlan 130,167 
+!
+vlan 188
+ name rt
+!
+vlan 199
+ name ses
+!
+vlan 200
+ name VOICE
+!
+vlan 211
+ name dee
+!
+vlan 222
+ name eer
+!
+vlan 224
+ name mgmt
+!
+vlan 233
+ name dfd
+!
+vlan 238 
+!
+vlan 299
+ name ermansolak
+!
+vlan 300-301 
+!
+vlan 333
+ name erman
+!
+vlan 344
+ name ddd
+!
+vlan 366
+ name ttt
+!
+vlan 389
+ name eros
+!
+vlan 399-400 
+!
+vlan 444
+ name 344
+!
+vlan 474
+ name 33
+!
+vlan 555
+ name funf
+!
+vlan 666
+ name PA-test
+!
+vlan 777
+ name ghgh
+!
+vlan 877
+ name tttt
+!
+vlan 987 
+!
+vlan 988
+ name fdd
+!
+vlan 999
+ name fgfg
+!
+vlan 2000,2020 
+!
+vlan 2021
+ name firewall_inside
+!
+vlan 2140,2142-2144 
+!
+vlan 3000
+ name MGMT-CampusEdge
+!
+ip ssh port 2022 rotary 50
+ip ssh version 2
+!
+!
+!
+!
+!
+interface Loopback33
+ description CONFIG_FROM_FILE
+ ip address 33.33.33.33 255.255.255.255
+!
+interface Port-channel14
+ switchport trunk allowed vlan 1-43,45-54,56-65,67-76,78-4094
+!
+interface Port-channel15
+ switchport trunk allowed vlan 1-43,45-54,56-65,67-76,78-4094
+!
+interface Port-channel23
+ switchport trunk allowed vlan 1-43,45-54,56-65,67-76,78-4094
+!
+interface Port-channel24
+ description ORADBT2
+ switchport access vlan 2140
+ switchport trunk allowed vlan 2142-2144
+ switchport mode access
+!
+interface FastEthernet0
+ no ip address
+ no ip route-cache
+!
+interface GigabitEthernet1/0/1
+ description R.1.12 P4 - Marco
+ switchport access vlan 224
+ switchport mode access
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/2
+ description firewall-lab-inside
+ switchport access vlan 19
+ switchport mode trunk
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/3
+ switchport access vlan 666
+ switchport mode access
+!
+interface GigabitEthernet1/0/4
+ switchport access vlan 300
+ switchport mode access
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/5
+ switchport access vlan 224
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/6
+ description AP-ARISTA-1
+ switchport access vlan 224
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/7
+ description AP-ARISTA-2
+ switchport access vlan 224
+ switchport mode access
+ no snmp trap link-status
+!
+interface GigabitEthernet1/0/8
+ description SW-ARISTA
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/9
+ switchport access vlan 10
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/10
+ switchport access vlan 10
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/11
+ description ses
+ switchport access vlan 199
+ switchport mode access
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/12
+ switchport mode trunk
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/13
+ description Arista-test
+ switchport access vlan 199
+ switchport mode access
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/14
+ switchport access vlan 199
+ switchport mode access
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/15
+ description ORADBT2
+ switchport access vlan 2140
+ switchport trunk allowed vlan 2142-2144
+ switchport mode access
+ spanning-tree bpduguard enable
+ channel-group 24 mode active
+!
+interface GigabitEthernet1/0/16
+ description ORADBT2
+ switchport access vlan 2140
+ switchport trunk allowed vlan 2142-2144
+ switchport mode access
+ spanning-tree bpduguard enable
+ channel-group 24 mode active
+!
+interface GigabitEthernet1/0/17
+ switchport access vlan 224
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/18
+ switchport access vlan 224
+ switchport mode access
+ shutdown
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/19
+ description ORADBT2
+ switchport access vlan 2140
+ switchport trunk allowed vlan 2142-2144
+ switchport mode access
+ spanning-tree bpduguard enable
+ channel-group 24 mode active
+!
+interface GigabitEthernet1/0/20
+ description ORADBT2
+ switchport access vlan 2140
+ switchport trunk allowed vlan 2142-2144
+ switchport mode access
+ spanning-tree bpduguard enable
+ channel-group 24 mode active
+!
+interface GigabitEthernet1/0/21
+ description NEW SERV
+ switchport access vlan 224
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+ spanning-tree portfast
+!
+interface GigabitEthernet1/0/22
+ switchport access vlan 10
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/23
+ switchport mode trunk
+!
+interface GigabitEthernet1/0/24
+ description to debscp27-lab-rt01
+ switchport mode trunk
+ no snmp trap link-status
+ ip dhcp snooping trust
+!
+interface GigabitEthernet1/0/25
+ switchport access vlan 224
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/26
+ switchport access vlan 224
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/27
+ description HS48-DS
+ switchport access vlan 224
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface GigabitEthernet1/0/28
+ switchport access vlan 10
+ switchport mode access
+ no snmp trap link-status
+ storm-control broadcast level 0.20
+ storm-control multicast level 20.00
+ storm-control unicast level 20.00
+ storm-control action trap
+!
+interface Vlan1
+ description MGMT-VLAN
+ no ip address
+ no ip route-cache
+!
+interface Vlan10
+ no ip address
+ ip helper-address 192.168.10.1
+ ip helper-address 192.168.253.100
+ no ip route-cache
+!
+interface Vlan11
+ ip address 192.168.11.1 255.255.255.0
+ no ip route-cache
+!
+interface Vlan200
+ no ip address
+ ip helper-address 192.168.10.1
+ ip helper-address 192.168.253.100
+!
+interface Vlan224
+ ip address 192.168.238.3 255.255.255.0
+ ip helper-address 172.21.130.176
+ no ip route-cache
+!
+interface Vlan230
+ no ip address
+ no ip route-cache
+!
+interface Vlan666
+ description halo
+ no ip address
+!
+interface Vlan2020
+ no ip address
+!
+interface Vlan2021
+ ip address 198.18.0.1 255.254.0.0
+!
+interface Vlan3000
+ ip address 172.16.99.99 255.255.255.0
+ shutdown
+!
+ip default-gateway 192.168.238.2
+no ip http server
+no ip http secure-server
+!
+!
+ip access-list standard VTY
+ permit 172.21.10.16
+ permit 192.168.253.0 0.0.0.255
+ permit 192.168.240.0 0.0.0.255
+ permit 192.168.191.0 0.0.0.15
+!
+ip access-list extended ACL_WEBAUTH_REDIRECT
+ip access-list extended BLOCK
+ permit udp any any eq bootps
+ permit udp any any eq bootpc
+ permit udp any eq bootpc any eq bootps
+ permit udp any any eq domain
+ permit icmp any any
+ permit udp any any eq tftp
+ permit tcp any host 192.168.253.100 eq 443
+ permit tcp any host 192.168.253.100 eq 8443
+ deny   ip any any log
+ip access-list extended RedirectACL
+ deny   ip any host 192.168.253.100
+ permit tcp any any eq www
+ip access-list extended deny-int
+ permit ip any 192.168.240.0 0.0.0.255
+ deny   ip any any
+ip radius source-interface Vlan224 
+logging history size 500
+logging origin-id hostname
+access-list 90 permit 192.168.253.14
+access-list 91 permit 192.168.240.0 0.0.0.255
+access-list 91 permit 192.168.253.0 0.0.0.255
+!
+snmp-server community ciscorulez RW 90
+snmp-server community NY-public RO 91
+snmp-server location Deutschland, Braunschweig, CP27, 1.OG, R.1.14, SR05
+snmp-server contact infrastruktur-network@newyorker.de
+snmp-server system-shutdown
+snmp-server enable traps snmp authentication linkdown linkup coldstart warmstart
+snmp-server enable traps transceiver all
+snmp-server enable traps tty
+snmp-server enable traps config-copy
+snmp-server enable traps config
+snmp-server enable traps event-manager
+snmp-server enable traps cpu threshold
+snmp-server enable traps storm-control trap-rate 1
+snmp-server enable traps bridge newroot topologychange
+snmp-server enable traps vtp
+snmp-server enable traps vlancreate
+snmp-server enable traps vlandelete
+snmp-server enable traps flash insertion removal
+snmp-server enable traps port-security
+snmp-server enable traps envmon fan shutdown supply temperature status
+snmp-server enable traps stackwise
+snmp-server enable traps errdisable
+snmp-server enable traps mac-notification change move threshold
+snmp-server host 192.168.253.13 version 2c mon01 
+snmp ifmib ifalias long
+snmp ifmib ifindex persist
+tacacs-server host 192.168.253.14
+tacacs-server directed-request
+tacacs-server key 7 02080603045E002358585B0B5306471F020B7379267D626C381151470D
+!
+radius-server attribute 6 on-for-login-auth
+radius-server attribute 8 include-in-access-req
+radius-server attribute 25 access-request include
+radius-server retransmit 5
+radius-server timeout 20
+radius-server key aruba123
+radius-server vsa send accounting
+radius-server vsa send authentication
+!
+radius server myradius
+ address ipv4 172.21.130.176 auth-port 1812 acct-port 1813
+ timeout 10
+ key aruba123
+!
+!
+no vstack
+banner exec ^CCC
+You are here
+Device:   $(hostname).$(domain)
+Ort:      38112 Braunschweig
+Strasse:  Christian-Pommer-Strasse 27
+Gebaeude: 1
+Raum:     Unterverteilung 1.OG
+Schrank:  1
+Funktion: Access Switch fuers Testnetz
+^C
+banner motd ^CC
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                       **    **
+ **                     **  **                     **  ****
+ **   **                 ****              *  ** **** **  **
+ ***  ** **** **          **        ****  ** **  **   **  **
+ **** ** **   ***     *** **  ***  **  ** ****   *    *****
+ ** **** ****  ** *** **  ** ** ** ****   ****   **** **  **
+ **  *** **    **** ****  ** ** ** ** **  ** **  *    **   **
+ **   ** ****   **   **   **  ***  **  ** **  ** **** **   **
+
+
+ Sie haben sich mit $(hostname).$(domain) verbunden!
+
+ Dieses Geraet ist Eigentum von NewYorker.
+ Nur authorisierter Zugriff ist gestattet.
+
+ Bei Fragen: Infrastruktur-Network(at)newyorker.de
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+^C
+!
+line con 0
+ session-timeout 3 
+ exec-timeout 30 0
+ authorization commands 0 CON
+ authorization commands 1 CON
+ authorization commands 15 CON
+ authorization exec CON
+ logging synchronous
+ login authentication CON
+ escape-character 3
+line vty 0 4
+ session-timeout 3 
+ access-class VTY in
+ exec-timeout 30 0
+ authorization commands 0 VTY
+ authorization commands 1 VTY
+ authorization commands 15 VTY
+ authorization exec VTY
+ logging synchronous
+ login authentication VTY
+ length 0
+ transport preferred none
+ transport input telnet ssh
+ escape-character 3
+line vty 5 14
+ session-timeout 3 
+ access-class VTY in
+ exec-timeout 30 0
+ authorization commands 0 VTY
+ authorization commands 1 VTY
+ authorization commands 15 VTY
+ authorization exec VTY
+ logging synchronous
+ login authentication VTY
+ transport preferred none
+ transport input telnet ssh
+ escape-character 3
+line vty 15
+ session-timeout 3 
+ location Emergency Access Interface
+ access-class VTY in
+ exec-timeout 30 0
+ authorization commands 0 LOCAL_EMERGENCY_ADMIN
+ authorization commands 1 LOCAL_EMERGENCY_ADMIN
+ authorization commands 15 LOCAL_EMERGENCY_ADMIN
+ authorization exec LOCAL_EMERGENCY_ADMIN
+ logging synchronous
+ login authentication LOCAL_EMERGENCY_ADMIN
+ rotary 50
+ transport preferred none
+ transport input telnet ssh
+ escape-character 3
+!
+ntp server 10.2.0.100
+end
