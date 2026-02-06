@@ -1,0 +1,24 @@
+router1:
+    hostname: 192.168.199.30
+    username: admin
+    password: cisco
+    platform: ios 
+    
+router2:
+    hostname: 192.168.199.31
+    username: admin
+    password: cisco
+    platform: ios 
+    
+router3:
+    hostname: 192.168.199.32
+    username: admin
+    password: cisco
+    platform: ios 
+    
+router4:
+    hostname: 192.168.199.33
+    username: admin
+    password: cisco
+    platform: ios 
+    
