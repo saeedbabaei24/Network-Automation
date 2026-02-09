@@ -1,0 +1,61 @@
+devices:
+  R1:
+    os: iosxe
+    type: router
+    platform: x86
+
+    credentials:
+      default:
+        username: admin
+        password: cisco
+
+    connections:
+      cli:
+        protocol: ssh
+        ip: 192.168.199.30
+        
+# R2:
+#   os: iosxe
+#   type: router
+#   platform: x86
+
+#   credentials:
+#     default:
+#       username: admin
+#       password: cisco
+
+#   connections:
+#     cli:
+#       protocol: ssh
+#       ip: 192.168.199.31
+
+# R3:
+#   os: iosxe
+#   type: router
+#   platform: x86
+
+#   credentials:
+#     default:
+#       username: admin
+#       password: cisco
+
+#   connections:
+#     cli:
+#       protocol: ssh
+#       ip: 192.168.199.32
+
+
+# R4:
+#   os: iosxe
+#   type: router
+#   platform: x86
+
+#   credentials:
+#     default:
+#       username: admin
+#       password: cisco
+
+#   connections:
+#     cli:
+#       protocol: ssh
+#       ip: 192.168.199.33
