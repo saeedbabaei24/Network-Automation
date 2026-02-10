@@ -1,0 +1,61 @@
+{
+  "sites": {
+    "cp27": {
+      "baseline": "debscp27-as1",
+      "baseline_vlans": {},
+      "devices": {
+        "debscp27-as1": {
+          "vlans": {},
+          "roles": {},
+          "diff_vs_baseline": {
+            "missing": [],
+            "extra": [],
+            "name_mismatches": []
+          }
+        },
+        "debscp27-as2": {
+          "vlans": {},
+          "roles": {},
+          "diff_vs_baseline": {
+            "missing": [],
+            "extra": [],
+            "name_mismatches": []
+          }
+        },
+        "debscp27-as3": {
+          "vlans": {},
+          "roles": {},
+          "diff_vs_baseline": {
+            "missing": [],
+            "extra": [],
+            "name_mismatches": []
+          }
+        }
+      }
+    },
+    "hs48-eg": {
+      "baseline": "debshs48-eg-as01",
+      "baseline_vlans": {},
+      "devices": {
+        "debshs48-eg-as01": {
+          "vlans": {},
+          "roles": {},
+          "diff_vs_baseline": {
+            "missing": [],
+            "extra": [],
+            "name_mismatches": []
+          }
+        },
+        "debshs48-eg-as02": {
+          "vlans": {},
+          "roles": {},
+          "diff_vs_baseline": {
+            "missing": [],
+            "extra": [],
+            "name_mismatches": []
+          }
+        }
+      }
+    }
+  }
+}

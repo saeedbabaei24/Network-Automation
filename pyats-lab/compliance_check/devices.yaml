@@ -1,0 +1,79 @@
+devices:
+  debscp27-as1:
+    os: iosxe
+    type: switch
+    platform: x86
+    credentials:
+      default:
+        username: admin
+        password: cisco
+    connections:
+      cli:
+        protocol: ssh
+        ip: 192.168.199.35
+    custom:
+      site: cp27
+      is_site_baseline: true
+
+  debscp27-as2:
+    os: iosxe
+    type: switch
+    platform: x86
+    credentials:
+      default:
+        username: admin
+        password: cisco
+    connections:
+      cli:
+        protocol: ssh
+        ip: 192.168.199.36
+    custom:
+      site: cp27
+
+  debscp27-as3:
+    os: iosxe
+    type: switch
+    platform: x86
+    credentials:
+      default:
+        username: admin
+        password: cisco
+    connections:
+      cli:
+        protocol: ssh
+        ip: 192.168.199.37
+    custom:
+      site: cp27
+
+
+
+  debshs48-eg-as01:
+    os: iosxe
+    type: switch
+    platform: x86
+    credentials:
+      default:
+        username: admin
+        password: cisco
+    connections:
+      cli:
+        protocol: ssh
+        ip: 192.168.199.38
+    custom:
+      site: hs48-eg
+      is_site_baseline: true
+
+  debshs48-eg-as02:
+    os: iosxe
+    type: switch
+    platform: x86
+    credentials:
+      default:
+        username: admin
+        password: cisco
+    connections:
+      cli:
+        protocol: ssh
+        ip: 192.168.199.39
+    custom:
+      site: hs48-eg
