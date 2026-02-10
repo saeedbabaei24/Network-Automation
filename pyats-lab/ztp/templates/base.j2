@@ -1,0 +1,235 @@
+!
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+!
+hostname {{ router.hostname }}
+!
+aaa new-model
+aaa session-id common
+!
+clock timezone {{ common.timezone }}
+clock summer-time {{ common.summer_time }}
+!
+no ip domain lookup
+ip domain name {{ common.domain_name }}
+ip name-server {{ common.name_server }}
+ip cef
+!
+
+{# ---------------- DHCP ---------------- #}
+{% if router.dhcp is defined %}
+no ip dhcp conflict logging
+
+{% if router.dhcp.excluded is defined %}
+{% for ex in router.dhcp.excluded %}
+{% if ex.vrf is defined %}
+ip dhcp excluded-address vrf {{ ex.vrf }} {{ ex.start }} {{ ex.end }}
+{% else %}
+ip dhcp excluded-address {{ ex.start }} {{ ex.end }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if router.dhcp.pools is defined %}
+{% for pool in router.dhcp.pools %}
+ip dhcp pool {{ pool.name }}
+{% if pool.vrf is defined %} vrf {{ pool.vrf }}{% endif %}
+ network {{ pool.network }} {{ pool.mask }}
+ default-router {{ pool.default_router }}
+
+{% if pool.dns is defined %}
+ dns-server {{ pool.dns | join(' ') }}
+{% else %}
+ dns-server {{ common.dns_servers | join(' ') }}
+{% endif %}
+
+{% if pool.domain is defined %}
+ domain-name {{ pool.domain }}
+{% else %}
+ domain-name {{ common.domain_name }}
+{% endif %}
+
+{% if pool.lease is defined %}
+ lease {{ pool.lease }}
+{% endif %}
+!
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{# ---------------- Interfaces (LAN) ---------------- #}
+{% if router.lan is defined %}
+
+{% if router.lan.native is defined %}
+interface {{ router.lan.native.if_name }}
+ encapsulation dot1Q {{ router.lan.native.vlan }} native
+ ip address {{ router.lan.native.ip }} {{ router.lan.native.mask }}
+ ip nat inside
+!
+{% endif %}
+
+{% if router.lan.vlan11 is defined %}
+interface {{ router.lan.vlan11.if_name }}
+ encapsulation dot1Q {{ router.lan.vlan11.vlan }}
+ ip address {{ router.lan.vlan11.ip }} {{ router.lan.vlan11.mask }}
+{% if router.lan.vlan11.acl_in is defined %}
+ ip access-group {{ router.lan.vlan11.acl_in }} in
+{% endif %}
+ ip nat inside
+!
+{% endif %}
+
+{% if router.lan.technik is defined %}
+interface {{ router.lan.technik.if_name }}
+ description Techniknetz-LAN
+ encapsulation dot1Q {{ router.lan.technik.vlan }}
+{% if router.lan.technik.vrf is defined %}
+ ip vrf forwarding {{ router.lan.technik.vrf }}
+{% endif %}
+ ip address {{ router.lan.technik.ip }} {{ router.lan.technik.mask }}
+ ip nat inside
+!
+{% endif %}
+
+{% endif %}
+
+{# ---------------- WAN Dialer ---------------- #}
+{% if router.wan is defined and router.wan.dialer is defined %}
+interface {{ router.wan.dialer.if_name }}
+ description {{ router.wan.dialer.description }}
+ ip address negotiated
+ encapsulation ppp
+ ppp authentication chap callin
+ ppp chap hostname {{ router.wan.dialer.chap_hostname }}
+ ppp chap password 7 {{ router.wan.dialer.chap_password_7 }}
+ ip nat outside
+!
+{% endif %}
+
+{# ---------------- DMVPN ---------------- #}
+{% if router.dmvpn is defined and router.dmvpn.tunnels is defined %}
+{% for t in router.dmvpn.tunnels %}
+interface {{ t.name }}
+ description {{ t.description }}
+{% if t.vrf is defined %}
+ ip vrf forwarding {{ t.vrf }}
+{% endif %}
+ ip address {{ t.ip }} {{ t.mask }}
+ ip mtu {{ t.mtu }}
+ ip nhrp authentication {{ t.nhrp_auth }}
+
+{% for m in t.maps %}
+{% if m.multicast %}
+ ip nhrp map multicast {{ m.nbma }}
+{% endif %}
+ ip nhrp map {{ m.nhs }} {{ m.nbma }}
+{% endfor %}
+
+ ip nhrp network-id {{ t.network_id }}
+
+{% for nhs in t.nhs %}
+ ip nhrp nhs {{ nhs }}
+{% endfor %}
+
+ tunnel source {{ t.tunnel_source }}
+ tunnel mode gre multipoint
+ tunnel key {{ t.network_id }}
+
+{% if t.protect %}
+ tunnel protection ipsec profile {{ router.dmvpn.ipsec_profile }} shared
+{% endif %}
+!
+{% endfor %}
+{% endif %}
+
+{# ---------------- NAT ---------------- #}
+{% if router.nat is defined %}
+{% if router.nat.pools is defined %}
+{% for p in router.nat.pools %}
+ip nat pool {{ p.name }} {{ p.start }} {{ p.end }} netmask {{ p.netmask }}
+{% endfor %}
+{% endif %}
+
+{% if router.nat.rules is defined %}
+{% for r in router.nat.rules %}
+{{ r }}
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if router.wan is defined and router.wan.default_route is defined %}
+ip route 0.0.0.0 0.0.0.0 {{ router.wan.default_route.next_hop_if }}
+!
+{% endif %}
+
+{# ---------------- BGP ---------------- #}
+{% if router.bgp is defined and router.bgp.asn is defined and router.bgp.router_id is defined %}
+router bgp {{ router.bgp.asn }}
+ bgp router-id {{ router.bgp.router_id }}
+ bgp log-neighbor-changes
+
+{% if router.bgp.networks is defined %}
+{% for n in router.bgp.networks %}
+{% if n.mask is defined %}
+ network {{ n.prefix }} mask {{ n.mask }}
+{% else %}
+ network {{ n.prefix }}
+{% endif %}
+{% endfor %}
+{% endif %}
+
+{% if router.bgp.neighbors is defined %}
+{% for nb in router.bgp.neighbors %}
+ neighbor {{ nb.ip }} remote-as {{ nb.remote_as }}
+{% endfor %}
+{% endif %}
+
+{% if router.bgp.vrfs is defined %}
+{% for v in router.bgp.vrfs %}
+ !
+ address-family ipv4 vrf {{ v.name }}
+{% if v.networks is defined %}
+{% for n in v.networks %}
+  network {{ n.prefix }} mask {{ n.mask }}
+{% endfor %}
+{% endif %}
+{% if v.neighbors is defined %}
+{% for nb in v.neighbors %}
+  neighbor {{ nb.ip }} remote-as {{ nb.remote_as }}
+  neighbor {{ nb.ip }} activate
+{% endfor %}
+{% endif %}
+ exit-address-family
+{% endfor %}
+{% endif %}
+!
+{% endif %}
+
+
+{# ---------------- Logging / SNMP / Banner / NTP ---------------- #}
+logging source-interface {{ common.logging.source_if }}
+logging host {{ common.logging.host }} transport udp port {{ common.logging.port }}
+!
+
+{% if common.snmp is defined %}
+{% for c in common.snmp.communities %}
+snmp-server community {{ c.name }} {{ c.mode }} {{ c.acl }}
+{% endfor %}
+snmp-server trap-source {{ common.snmp.trap_source }}
+snmp-server contact {{ common.snmp.contact }}
+snmp-server host {{ common.snmp.host }} version 2c {{ common.snmp.host_name }}
+!
+{% endif %}
+
+{% if common.banners is defined and common.banners.motd is defined %}
+banner motd ^C
+{{ common.banners.motd }}
+^C
+!
+{% endif %}
+
+ntp source {{ common.logging.source_if }}
+ntp server {{ common.ntp_server }}
+!
+end

@@ -1,0 +1,34 @@
+routers:
+  9SQUBEOEJBKHYNJAKQD8W:
+    hostname: R1
+    mgmt_ip: 192.168.199.30
+    site: A
+    role: branch
+    dhcp:
+      excluded: []
+      pools: []
+    lan: {}
+    wan: {}
+    dmvpn: {}
+    nat: {}
+    bgp: {}
+
+  929LZ4UMBQFS4QDWBKYBT:
+    hostname: R2
+    mgmt_ip: 192.168.199.31
+    site: B
+    role: branch
+    dhcp:
+      excluded: []
+      pools: []
+    lan: {}
+    wan: {}
+    dmvpn: {}
+    nat: {}
+    bgp:
+      asn: 65001
+      router_id: 1.1.1.1
+      networks:
+        - { prefix: 10.10.10.0, mask: 255.255.255.0 }
+      neighbors:
+        - { ip: 192.0.2.1, remote_as: 65000 }

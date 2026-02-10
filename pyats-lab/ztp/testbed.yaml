@@ -1,0 +1,17 @@
+testbed:
+  name: ztp-lab
+  credentials:
+    default:
+      username: admin
+      password: cisco
+    enable:
+      password: cisco
+
+devices:
+  ztp-device:
+    os: iosxe
+    type: router
+    connections:
+      cli:
+        protocol: ssh
+

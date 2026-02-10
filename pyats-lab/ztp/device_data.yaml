@@ -1,0 +1,13 @@
+# device_data.yaml
+devices:
+  9SQUBEOEJBKHYNJAKQD8W:
+    hostname: R1
+    mgmt_ip: 192.168.199.30
+    site: A
+    role: branch
+
+  929LZ4UMBQFS4QDWBKYBT:
+    hostname: R2
+    mgmt_ip: 192.168.199.31
+    site: B
+    role: branch
