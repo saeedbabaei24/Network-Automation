@@ -1,0 +1,17 @@
+inventory:
+  plugin: NetBoxInventory2
+  options:
+    nb_url: "https://netbox"
+    nb_token: "***"
+    ssl_verify: false
+
+
+
+    filter_parameters:
+      tag: "ztp"
+
+
+runner:
+  plugin: threaded
+  options:
+    num_workers: 10

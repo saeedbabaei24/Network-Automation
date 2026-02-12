@@ -1,0 +1,21 @@
+common:
+  timezone: "CET 1"
+  summer_time: "CEST recurring last Sun Mar 2:00 last Sun Oct 3:00"
+  domain_name: "lab.local"
+  name_server: "192.168.199.1"
+  dns_servers: ["192.168.199.1", "8.8.8.8"]
+
+  logging:
+    source_if: "Loopback0"
+    host: "192.168.199.50"
+    port: 514
+
+  snmp:
+    communities:
+      - { name: "public", mode: "RO", acl: "10" }
+    trap_source: "Loopback0"
+    contact: "noc@lab.local"
+    host: "192.168.199.60"
+    host_name: "public"
+
+  ntp_server: "192.168.199.80"

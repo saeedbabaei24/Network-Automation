@@ -1,0 +1,4 @@
+device_type_slug_map:
+  iosv: "templates/iosv_router.j2"
+
+default: "templates/base_router.j2"

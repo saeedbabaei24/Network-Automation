@@ -1,0 +1,18 @@
+!
+service timestamps debug datetime msec localtime show-timezone
+service timestamps log datetime msec localtime show-timezone
+service password-encryption
+!
+hostname {{ router.hostname }}
+!
+aaa new-model
+aaa session-id common
+!
+clock timezone {{ common.timezone }}
+clock summer-time {{ common.summer_time }}
+!
+no ip domain lookup
+ip domain name {{ common.domain_name }}
+ip name-server {{ common.name_server }}
+ip cef
+!
