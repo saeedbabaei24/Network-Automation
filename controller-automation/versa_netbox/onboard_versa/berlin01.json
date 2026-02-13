@@ -1,0 +1,11 @@
+{
+  "deviceName": "Berlin-01",
+  "siteId": 101,
+  "orgName": "CompanyName",
+  "deviceGroup": "Branch-Type1",
+  "serialNumber": "SN-BER-0001",
+  "country": "DE",
+  "latitude": 52.5200,
+  "longitude": 13.4050
+}
+
