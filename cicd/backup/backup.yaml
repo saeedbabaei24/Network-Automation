@@ -1,0 +1,65 @@
+name: BACKUP
+on:
+  workflow_dispatch:
+
+jobs:
+  run-backup:
+    runs-on: ubuntu-20.04
+
+    container:
+      image: node:20-bookworm
+      options: --user root
+
+    env:
+      DEVICE_USERNAME: ${{ secrets.DEVICE_USERNAME }}
+      DEVICE_PASSWORD: ${{ secrets.DEVICE_PASSWORD }}
+      DEVICE_ENABLE_PASSWORD: ${{ secrets.DEVICE_ENABLE_PASSWORD }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Python + venv
+        run: |
+          apt-get update
+          apt-get install -y python3 python3-venv python3-pip
+
+      - name: Create venv + install dependencies
+        run: |
+          python3 -m venv .venv
+          . .venv/bin/activate
+          python -m pip install --upgrade pip
+          python -m pip install nornir nornir-utils nornir-scrapli scrapli scrapli-community pyyaml
+
+
+      - name: Copy SSH legacy config
+        run: |
+          mkdir -p /etc/ssh/ssh_config.d
+          cp config/legacy.conf /etc/ssh/ssh_config.d/legacy.conf
+
+      - name: Debug enable secret exists (no value printed)
+        run: |
+          python3 -c "import os; print('ENABLE_SET=', bool(os.getenv('DEVICE_ENABLE_PASSWORD')))"
+
+
+
+      - name: Run Backup script
+        run: |
+          . .venv/bin/activate
+          python backup.py
+
+      - name: Commit generated configs (if any)
+        run: |
+          ls -l ./backup || echo "No configs found"
+
+          git config --global user.name "forgejo-actions[bot]"
+          git config --global user.email "forgejo-actions[bot]@users.noreply.github.com"
+
+          CHANGED=$(git status --porcelain ./backup)
+          if [ -n "$CHANGED" ]; then
+            git add ./backup
+            git commit -m "Add/update generated configs"
+            git push origin HEAD
+          else
+            echo "No changes to commit"
+          fi
