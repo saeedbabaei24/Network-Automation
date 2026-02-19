@@ -1,0 +1,40 @@
+{
+  "interfaces": [
+    {
+      "interface": "GigabitEthernet0/0",
+      "ip_address": "192.168.199.30",
+      "status": "up",
+      "protocol": "up"
+    },
+    {
+      "interface": "GigabitEthernet0/1",
+      "ip_address": "unassigned",
+      "status": "administratively down",
+      "protocol": "down"
+    },
+    {
+      "interface": "GigabitEthernet0/2",
+      "ip_address": "unassigned",
+      "status": "administratively down",
+      "protocol": "down"
+    },
+    {
+      "interface": "GigabitEthernet0/3",
+      "ip_address": "unassigned",
+      "status": "administratively down",
+      "protocol": "down"
+    },
+    {
+      "interface": "Loopback0",
+      "ip_address": "unassigned",
+      "status": "up",
+      "protocol": "up"
+    },
+    {
+      "interface": "Loopback100",
+      "ip_address": "unassigned",
+      "status": "up",
+      "protocol": "up"
+    }
+  ]
+}
