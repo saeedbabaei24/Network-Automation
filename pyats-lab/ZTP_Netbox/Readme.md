@@ -2,28 +2,6 @@
 
 This project is a **ZTP-style automation workflow** that uses **NetBox as the source of truth**, renders device configuration using **Jinja2**, and pushes the final config to network devices using **Nornir/Netmiko**.
 
----
-
-## Folder Structure
-
-ZTP_Netbox/
-├── config/                 # inventory / runtime config (if used)
-├── datas/                  # YAML data files (source of truth helpers)
-│   ├── common.yaml         # shared variables (DNS/NTP/SNMP/logging/...)
-│   └── template_map.yaml   # maps device/site/role → template name
-├── src/                    # Python workflow
-│   ├── main.py             # main entry point (orchestrates the workflow)
-│   ├── get_serial_pyats.py # get device serial via pyATS
-│   ├── template_select.py  # selects proper Jinja2 template
-│   ├── render.py           # renders configuration using Jinja2 + YAML/NetBox data
-│   ├── push.py             # pushes rendered config using Nornir/Netmiko + basic verification
-│   ├── test_netbox_api.py  # NetBox API test helper
-│   ├── test_nornir_inventory.py # Nornir inventory test helper
-│   └── test_render.py      # rendering test helper
-└── templates/
-    └── base_router.j2      # base Jinja2 config template
-
----
 
 ## Workflow Summary
 
