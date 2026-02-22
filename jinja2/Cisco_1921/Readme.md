@@ -2,17 +2,6 @@
 
 This project generates Cisco IOS configuration from **Jinja2 templates** and **YAML data**, then pushes the config to **Cisco 1921** routers using **Netmiko**.
 
----
-
-## Folder Contents
-
-Cisco_1921/
-├── Cisco1921_Config.py      # Render template + push config via SSH (Netmiko)
-├── Config_Template.j2       # Jinja2 configuration template
-├── Hosts.yaml               # List of router IPs
-└── Router_Data.yaml         # Common + per-router variables (YAML)
-
----
 
 ## How It Works
 
