@@ -21,3 +21,5 @@
     - name: "Printing Facts"
       debug:
         msg: "{{cli_result}}"
+
+        
