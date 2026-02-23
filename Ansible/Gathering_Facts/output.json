@@ -1,0 +1,115 @@
+{
+    "ansible_facts": {
+        "ansible_net_all_ipv4_addresses": [
+            "192.168.199.30"
+        ],
+        "ansible_net_all_ipv6_addresses": [],
+        "ansible_net_api": "cliconf",
+        "ansible_net_gather_network_resources": [],
+        "ansible_net_gather_subset": [
+            "default",
+            "interfaces"
+        ],
+        "ansible_net_hostname": "R1",
+        "ansible_net_image": "flash0:/vios-adventerprisek9-m",
+        "ansible_net_interfaces": {
+            "GigabitEthernet0/0": {
+                "bandwidth": 1000000,
+                "description": null,
+                "duplex": "Auto",
+                "ipv4": [
+                    {
+                        "address": "192.168.199.30",
+                        "subnet": "24"
+                    }
+                ],
+                "lineprotocol": "up",
+                "macaddress": "5000.0001.0000",
+                "mediatype": "RJ45",
+                "mtu": 1500,
+                "operstatus": "up",
+                "type": "iGbE"
+            },
+            "GigabitEthernet0/1": {
+                "bandwidth": 1000000,
+                "description": null,
+                "duplex": "Auto",
+                "ipv4": [],
+                "lineprotocol": "down",
+                "macaddress": "5000.0001.0001",
+                "mediatype": "RJ45",
+                "mtu": 1500,
+                "operstatus": "administratively down",
+                "type": "iGbE"
+            },
+            "GigabitEthernet0/2": {
+                "bandwidth": 1000000,
+                "description": null,
+                "duplex": "Auto",
+                "ipv4": [],
+                "lineprotocol": "down",
+                "macaddress": "5000.0001.0002",
+                "mediatype": "RJ45",
+                "mtu": 1500,
+                "operstatus": "administratively down",
+                "type": "iGbE"
+            },
+            "GigabitEthernet0/3": {
+                "bandwidth": 1000000,
+                "description": null,
+                "duplex": "Auto",
+                "ipv4": [],
+                "lineprotocol": "down",
+                "macaddress": "5000.0001.0003",
+                "mediatype": "RJ45",
+                "mtu": 1500,
+                "operstatus": "administratively down",
+                "type": "iGbE"
+            },
+            "Loopback0": {
+                "bandwidth": 8000000,
+                "description": null,
+                "duplex": null,
+                "ipv4": [],
+                "lineprotocol": "up",
+                "macaddress": null,
+                "mediatype": null,
+                "mtu": 1514,
+                "operstatus": "up",
+                "type": null
+            },
+            "Loopback100": {
+                "bandwidth": 8000000,
+                "description": null,
+                "duplex": null,
+                "ipv4": [],
+                "lineprotocol": "up",
+                "macaddress": null,
+                "mediatype": null,
+                "mtu": 1514,
+                "operstatus": "up",
+                "type": null
+            }
+        },
+        "ansible_net_iostype": "IOS",
+        "ansible_net_model": "IOSv",
+        "ansible_net_neighbors": {
+            "GigabitEthernet0/0": [
+                {
+                    "host": "debscp27-lab-sw01.network.newyorker.de",
+                    "ip": "192.168.11.1",
+                    "platform": "cisco WS-C2960X-24TS-L",
+                    "port": "GigabitEthernet1/0/11"
+                }
+            ]
+        },
+        "ansible_net_operatingmode": "autonomous",
+        "ansible_net_python_version": "3.12.3",
+        "ansible_net_serialnum": "9SQUBEOEJBKHYNJAKQD8W",
+        "ansible_net_system": "ios",
+        "ansible_net_version": "15.9(3)M6",
+        "ansible_network_resources": {}
+    },
+    "changed": false,
+    "failed": false
+}

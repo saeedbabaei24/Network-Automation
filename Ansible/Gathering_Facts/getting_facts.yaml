@@ -1,0 +1,23 @@
+---
+- name: "Gathering Facts"
+  hosts: R1
+  tasks:
+    - name: Gather all Facts
+      cisco.ios.ios_facts:
+        gather_subset: interfaces
+
+      register: cli_result
+
+
+    - name: "Saving facts into output.hson file"
+      copy:
+        content="{{ cli_result | to_nice_json }}"
+        dest=output.json
+
+    - name: "Printing version"
+      debug:
+         msg: "{{ cli_result.ansible_facts.ansible_net_hostname }} >>> {{ cli_result.ansible_facts.ansible_net_version }}"
+
+    - name: "Printing Facts"
+      debug:
+        msg: "{{cli_result}}"
