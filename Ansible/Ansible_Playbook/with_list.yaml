@@ -1,0 +1,33 @@
+--- 
+- hosts: localhost
+  vars: 
+    IP_Addr:
+      - 192.168.199.30
+      - 192.168.199.31
+      - [192.168.199.40, 192.168.199.41]
+
+  tasks:
+   -  name: "Prin with loop"
+      debug:
+        msg: "{{ item }}"
+      with_list: "{{ IP_Addr | flatten(1)}}"
+
+
+# loop is the modern, recommended way.
+# with_list is the old legacy syntax (still works, but not recommended anymore).
+
+# - name: Print IPs
+#   debug:
+#     msg: "IP is {{ item }}"
+#   loop:
+#     - 192.168.1.1
+#     - 192.168.1.2
+
+
+# - name: Print IPs
+#   debug:
+#     msg: "IP is {{ item }}"
+#   with_list:
+#     - 192.168.1.1
+#     - 192.168.1.2
+

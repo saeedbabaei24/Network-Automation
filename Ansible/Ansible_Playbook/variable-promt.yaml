@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  vars_prompt:
+
+    - name: UserName
+      prompt: what is your username?
+      private: no
+
+    - name: PassWord
+      prompt: Enter the password
+      encrypt: sha512_crypt
+      confirm: yes
+
+  tasks:
+    - name: print
+      debug:
+        msg: 
+          - "Username is: {{ UserName }}"
+          - "Password is: {{ PassWord }}"
+
+
+# we can use Promt for taking the input from the user.
+# then we can use the variables in tasks.
+# private: no > means it is clear text. encrypt: sha512_crypt > means it will be encruptes and it is secret. with "confirm: yes" it will ask again the password.

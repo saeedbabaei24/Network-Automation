@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  vars: 
+    - IP_Addr: 192.168.199.30
+  tasks: 
+  - name: Print
+    debug:
+      #msg: "The IP is: {{ IP_Addr}}"
+      msg: "The IP is: {{ IP_Addr | type_debug }}"
+
+# We can define the variable in playbook
+
+
+# We can call the variable with {{ X }}
+# we can filter it and show the type os the variable. In this case it is AnsibleUnicode

@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Print
+      debug:
+          msg: "Hello World"
+
+
+
+# It will choose localhost and print Hello World. 
+
+# Like print() in python. 
+
+ 
+
+# How ansible works? 
+# It look for a file which is config file. In this file we can define where is the inventory file. 
+
+# To see where is the config fie: 
+
+# #ansible –version 
+
+ 
+
+# saeed@saeed-ubuntu2:~/Desktop/Network-Automation/Ansible$ ansible --version 
+
+# ansible [core 2.16.3] 
+
+#   config file = /home/saeed/Desktop/Network-Automation/Ansible/ansible.cfg 
+
+#   configured module search path = ['/home/saeed/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules'] 
+
+#   ansible python module location = /usr/lib/python3/dist-packages/ansible 
+
+#   ansible collection location = /home/saeed/.ansible/collections:/usr/share/ansible/collections 
+
+#   executable location = /usr/bin/ansible 
+
+#   python version = 3.12.3 (main, Jan 22 2026, 20:57:42) [GCC 13.3.0] (/usr/bin/python3) 
+
+#   jinja version = 3.1.2 
+
+#   libyaml = True 
+
+# saeed@saeed-ubuntu2:~/Desktop/Network-Automation/Ansible$  
