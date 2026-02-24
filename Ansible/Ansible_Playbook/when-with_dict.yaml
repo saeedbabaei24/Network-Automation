@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  vars: 
+    - IP_Addr: 
+        - IP: 192.168.199.30
+        - Hostname: R1
+        - FQDN: example.com
+
+
+  tasks:
+    - name: Print IP Only
+      debug:
+        msg: "This is an IP address {{ item }}"
+      with_dict: "{{ IP_Addr }}"
+      when: item.value | ipv4
+
+#this is a loop on dict with a filter.
+
+# saeed@saeed-ubuntu2:~/Desktop/Network-Automation/Ansible/Ansible_Playbook$ ansible-playbook when-with_dict.yaml 
+# [DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated in favor of specifying a dictionary. This feature will be removed in version 2.18. Deprecation warnings can be disabled by setting 
+# deprecation_warnings=False in ansible.cfg.
+
+# PLAY [localhost] *****************************************************************************************************************************************************************************************************
+
+# TASK [Print IP Only] *************************************************************************************************************************************************************************************************
+# [DEPRECATION WARNING]: Use 'ansible.utils.ipv4' module instead. This feature will be removed from ansible.netcommon in a release after 2024-01-01. Deprecation warnings can be disabled by setting 
+# deprecation_warnings=False in ansible.cfg.
+# ok: [localhost] => (item={'key': 'IP', 'value': '192.168.199.30'}) => {
+#     "msg": "This is an IP address {'key': 'IP', 'value': '192.168.199.30'}"
+# }
+# skipping: [localhost] => (item={'key': 'Hostname', 'value': 'R1'}) 
+# skipping: [localhost] => (item={'key': 'FQDN', 'value': 'example.com'}) 
+
+# PLAY RECAP ***********************************************************************************************************************************************************************************************************
+# localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

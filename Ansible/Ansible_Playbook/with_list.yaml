@@ -11,6 +11,7 @@
       debug:
         msg: "{{ item }}"
       with_list: "{{ IP_Addr | flatten(1)}}"
+      #with_items: "{{ IP_Addr }}"
 
 
 # loop is the modern, recommended way.
@@ -31,3 +32,6 @@
 #     - 192.168.1.1
 #     - 192.168.1.2
 
+
+
+#with_items: "{{ IP_Addr }}" >> with this we can see all the nested list.

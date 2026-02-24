@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  vars: 
+    - IP_Addr: 192.168.199.30
+
+
+  tasks:
+    - name: Print IP
+      debug:
+        msg: "This is an IP address {{ IP_Addr }}"
+      when: IP_Addr | ipv4
+
+# It will prit the massage of the IP is correct.
+# actuly  ot will convert the IP_Addr to ipv4 if the result is true then the massage will be printed.
+

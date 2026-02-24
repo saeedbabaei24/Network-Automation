@@ -1,0 +1,37 @@
+---
+- hosts: localhost
+  vars: 
+    - IP_Addr: 
+        - 192.168.199.30
+        - R1
+        - Sw1
+
+
+  tasks:
+    - name: Print IP Only
+      debug:
+        msg: "This is an IP address {{ item }}"
+      loop: "{{ IP_Addr }}"
+      when: item | ipv4
+
+
+# Here there is a loop on the list and there is also a condition which is true if the list member is an ipv4.
+
+
+# saeed@saeed-ubuntu2:~/Desktop/Network-Automation/Ansible/Ansible_Playbook$ ansible-playbook when-loop-list.yaml 
+# [DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated in favor of specifying a dictionary. This feature will be removed in version 2.18. Deprecation warnings can be disabled by setting 
+# deprecation_warnings=False in ansible.cfg.
+
+# PLAY [localhost] *****************************************************************************************************************************************************************************************************
+
+# TASK [Print IP Only] *************************************************************************************************************************************************************************************************
+# [DEPRECATION WARNING]: Use 'ansible.utils.ipv4' module instead. This feature will be removed from ansible.netcommon in a release after 2024-01-01. Deprecation warnings can be disabled by setting 
+# deprecation_warnings=False in ansible.cfg.
+# ok: [localhost] => (item=192.168.199.30) => {
+#     "msg": "This is an IP address 192.168.199.30"
+# }
+# skipping: [localhost] => (item=R1) 
+# skipping: [localhost] => (item=Sw1) 
+
+# PLAY RECAP ***********************************************************************************************************************************************************************************************************
+# localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Gather Linux facts
+      ansible.builtin.setup:
+
+    - name: Print facts
+      debug:
+        var: ansible_facts['os_family']
+
+  
+
+# It will print the os_family section of ansible_fact
+
+# saeed@saeed-ubuntu2:~/Desktop/Network-Automation/Ansible/Ansible_Playbook$ ansible-playbook facts.yaml 
+
+# PLAY [localhost] *****************************************************************************************************************************************************************************************************
+
+# TASK [Gather Linux facts] ********************************************************************************************************************************************************************************************
+# ok: [localhost]
+
+# TASK [Print facts] ***************************************************************************************************************************************************************************************************
+# ok: [localhost] => {
+#     "ansible_facts['os_family']": "Debian"
+# }
+
+# PLAY RECAP ***********************************************************************************************************************************************************************************************************
+# localhost                  : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  

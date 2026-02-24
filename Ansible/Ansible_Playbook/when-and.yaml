@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: Gather Linux facts
+      ansible.builtin.setup:
+
+    - name: Print facts
+      debug:
+        #var: ansible_facts
+        msg: "This is ubuntu {{ ansible_facts['distribution_version'] }}"
+      when: ansible_facts['os_family'] == "Debian" and ansible_facts['distribution_version'] | int >= 20
+
+# we can have logical operations with "when"
+
+# here we need to convert the float to int  so we use | and then int 
