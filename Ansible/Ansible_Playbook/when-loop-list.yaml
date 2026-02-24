@@ -13,6 +13,8 @@
         msg: "This is an IP address {{ item }}"
       loop: "{{ IP_Addr }}"
       when: item | ipv4
+      #when: item | ipv4('host') if the ip is host ip /32
+      #when: item | ipv4('public') if the ip is public
 
 
 # Here there is a loop on the list and there is also a condition which is true if the list member is an ipv4.

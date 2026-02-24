@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  tasks:
+    - name: create facts file
+      copy:
+        content: "{{ ansible_facts }}"
+        #content: "{{ ansible_facts | to_nice_json }}"
+        dest: local_facts.json
+
+#It will gather the facts and save it as local_facts.json
+
+# saeed@saeed-ubuntu2:~/Desktop/Network-Automation/Ansible/Ansible_Playbook$ ansible-playbook file-json.yaml 
+
+# PLAY [localhost] *****************************************************************************************************************************************************************************************************
+
+# TASK [create facts file] *********************************************************************************************************************************************************************************************
+# changed: [localhost]
+
+# PLAY RECAP ***********************************************************************************************************************************************************************************************************
+# localhost                  : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+   #content: "{{ ansible_facts | to_nice_json }}" >> this will convert/pars the output to nice_json

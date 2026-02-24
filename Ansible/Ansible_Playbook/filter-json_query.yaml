@@ -1,0 +1,19 @@
+---
+- hosts: localhost
+  tasks:
+    - name: "save the Json data to a variable as a local_facts.json"
+      set_fact: 
+       file_d: "{{ lookup('file', 'local_facts.jason') | from_json }}"
+
+    - name: "print"
+      debug:
+        msg: "{{ file_d | jason_query('processor') }}"
+        #msg: "{{ file_d | jason_query('devices.*.partitions') }}"
+
+
+# It will save the output in file_d with filter with "from_jason". we use from_jason when we want to import.
+# then in second task we will query the prossessor in file and print the values of it.
+
+
+ #msg: "{{ file_d | jason_query('devices.*.partitions') }}"
+ #This mens go to the devices, for all items in devices, look for the partitions.

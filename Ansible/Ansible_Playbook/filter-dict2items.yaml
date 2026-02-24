@@ -1,0 +1,42 @@
+---
+- hosts: localhost
+  vars: 
+    - Dict:
+        R1: 192.168.199.30
+        R2: 192.168.199.31
+        Sw1: 192.168.199.40
+
+
+  tasks:
+    - name: "Print"
+      debug:
+        msg: "{{ Dict | dict2items}}"
+
+# It will seprate the key and value of each key:value inn Dict
+
+# saeed@saeed-ubuntu2:~/Desktop/Network-Automation/Ansible/Ansible_Playbook$ ansible-playbook filter-dict2items.yaml 
+# [DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated in favor of specifying a dictionary. This feature will be removed in version 2.18. Deprecation warnings can be disabled by setting 
+# deprecation_warnings=False in ansible.cfg.
+
+# PLAY [localhost] *****************************************************************************************************************************************************************************************************
+
+# TASK [Print] *********************************************************************************************************************************************************************************************************
+# ok: [localhost] => {
+#     "msg": [
+#         {
+#             "key": "R1",
+#             "value": "192.168.199.30"
+#         },
+#         {
+#             "key": "R2",
+#             "value": "192.168.199.31"
+#         },
+#         {
+#             "key": "Sw1",
+#             "value": "192.168.199.40"
+#         }
+#     ]
+# }
+
+# PLAY RECAP ***********************************************************************************************************************************************************************************************************
+# localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  

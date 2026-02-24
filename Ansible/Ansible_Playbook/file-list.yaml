@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+
+  vars:
+    - List: "{{ lookup('file', 'R1_config.txt').splitlines() }}"
+
+  tasks:
+    - name: "Print"
+      debug:
+        msg: "{{ List }}"
+        #msg: "{{ List[0] }}"
+
+# It will make a list then print it.
+
+# saeed@saeed-ubuntu2:~/Desktop/Network-Automation/Ansible/Ansible_Playbook$ ansible-playbook file-list.yaml 
+# [DEPRECATION WARNING]: Specifying a list of dictionaries for vars is deprecated in favor of specifying a dictionary. This feature will be removed in version 2.18. Deprecation warnings can be disabled by setting 
+# deprecation_warnings=False in ansible.cfg.
+
+# PLAY [localhost] *****************************************************************************************************************************************************************************************************
+
+# TASK [Print] *********************************************************************************************************************************************************************************************************
+# ok: [localhost] => {
+#     "msg": [
+#         "host name R1",
+#         "int loop 1 ",
+#         "ip add 10.10.10.1 255.255.255.0"
+#     ]
+# }
+
+# PLAY RECAP ***********************************************************************************************************************************************************************************************************
+# localhost                  : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
