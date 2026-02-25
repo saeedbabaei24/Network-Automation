@@ -1,0 +1,24 @@
+all:
+  vars:
+    ansible_connection: ansible.netcommon.network_cli
+    ansible_network_os: cisco.ios.ios
+    ansible_user: admin
+    ansible_password: cisco
+    ansible_become: true
+    ansible_become_method: enable
+    ansible_become_password: cisco
+    ansible_ssh_common_args: "-o PreferredAuthentications=password -o PubkeyAuthentication=no"
+    ansible_paramiko_look_for_keys: false
+    ansible_network_cli_ssh_type: libssh
+
+  children:
+    routers:
+      hosts:
+        R1:
+          ansible_host: 192.168.199.30
+        R2:
+          ansible_host: 192.168.199.31
+    switches:
+      hosts:
+        sw1:
+          ansible_host: 192.168.199.40

@@ -1,0 +1,27 @@
+- name: "Send Configuerations"
+  hosts: routers
+  connection: network_cli
+  tasks:
+    - name: Sending Configuerations
+      # https://docs.ansible.com/ansible/latest/collections/cisco/ios/ios_config_module.html
+      cisco.ios.ios_config:
+        lines:
+          - snmp-server community cisco
+          - snmp-server location HQ
+
+          #parens: interfaxe X > if the config we are sending is for sub configuration mode!
+
+
+          
+
+# (ansible) saeed@saeed-ubuntu2:~/Desktop/Network-Automation/Ansible/Cisco$ ansible-playbook config-send.yaml 
+
+# PLAY [Send Configuerations] ***************************************************************************************************************************************************************************************
+
+# TASK [Sending Configuerations] ************************************************************************************************************************************************************************************
+# changed: [R1]
+# changed: [R2]
+
+# PLAY RECAP ********************************************************************************************************************************************************************************************************
+# R1                         : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+# R2                         : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

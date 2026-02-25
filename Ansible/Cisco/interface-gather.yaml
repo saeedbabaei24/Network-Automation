@@ -1,0 +1,18 @@
+---
+- name: "send command"
+  hosts: routers
+  connection: network_cli
+  tasks: 
+    - name: "Gathering L2 Interface"
+      cisco.ios.ios_l2_interfaces:
+        config:
+        state: gathered
+      register: cli_result
+
+    - name: Print output
+      debug:
+        #msg: "{{ cli_result }}"
+        msg: "{{ cli_result['gathered'] }}"
+
+#https://docs.ansible.com/projects/ansible/latest/collections/cisco/ios/ios_l2_interfaces_module.html#ansible-collections-cisco-ios-ios-l2-interfaces-module
+

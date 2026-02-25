@@ -1,0 +1,17 @@
+- name: "Send Configuerations"
+  hosts: routers
+  connection: network_cli
+  tasks:
+    - name: Sending Configuerations
+
+      cisco.ios.ios_config:
+        src: cisco_confis.txt
+        backup: yes
+        backup_options:
+          filename: cisco_configs_bkp.ios
+          dir_path: /home/saeed/Desktop/Network-Automation/Ansible/Cisco/Ansible-01
+
+
+  
+# https://docs.ansible.com/ansible/latest/collections/cisco/ios/ios_config_module.html
+

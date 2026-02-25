@@ -1,0 +1,24 @@
+---
+- name: "send command"
+  hosts: switches
+  connection: network_cli
+  tasks: 
+    - name: "Gathering L2 Interface"
+      cisco.ios.ios_l2_interfaces:
+        config:
+        - name: gigabitEthernet0/2 
+          mode: access
+          access:
+            vlan: 100
+          voice:
+            vlan: 200
+        - name: gigabitEthernet0/3
+          mode: trunk
+          trunk:
+            allowed_vlans: 10,20-30
+            encapsulation: dot1q
+        state: merged
+
+
+
+

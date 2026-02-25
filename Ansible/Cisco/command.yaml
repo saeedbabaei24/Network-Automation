@@ -1,0 +1,16 @@
+---
+- name: "send command"
+  hosts: routers
+  connection: network_cli
+  tasks: 
+    - name: sending command
+      cisco.ios.ios_command:
+        commands: 
+          - show version
+
+      register: cli_result
+
+    - name: Print output
+      debug:
+        msg: "{{ cli_result }}"
+

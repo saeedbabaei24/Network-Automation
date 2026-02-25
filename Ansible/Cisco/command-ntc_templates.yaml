@@ -1,0 +1,19 @@
+---
+- name: "send command"
+  hosts: routers
+  connection: network_cli
+  tasks: 
+    - name: "sending command"
+      ansible.utils.cli_parse:
+        command: "show version"
+        parser:
+          name: ansible.netcommon.ntc_templates
+
+      register: cli_result
+
+    - name: Print output
+      debug:
+        #msg: "{{ cli_result }}"
+        msg: "{{ cli_result['parsed'] }}"
+
+# with tis collection "ansible.utils.cli_parse" we can have parsed output.
